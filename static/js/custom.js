@@ -9,7 +9,7 @@ function initTable(val, result) {
         $('#regionBlock').css({"display": "none"});
         let tableData = '<table><thead><th>Id</th><th>Title</th><th>Content</th><th>Regions</th><th>Authors</th></thead>';
         $.each(result, function (index, record) {
-            tableData += '<tr data-href="/api/v1/article/' + record.id + '/"><td>' + record.id + '</td><td>' + record.title + '</td><td>' + record.content + '</td><td>' + record.regions + '</td><td>' + record.authors + '</td></tr>';
+            tableData += '<tr data-resource="Article" data-href="/api/v1/article/' + record.id + '/"><td>' + record.id + '</td><td>' + record.title + '</td><td>' + record.content + '</td><td>' + record.regions + '</td><td>' + record.authors + '</td></tr>';
         });
         container.append(tableData);
     }
@@ -21,7 +21,7 @@ function initTable(val, result) {
         $('#authorBlock').css("display", "");
         let tableData = '<table><thead><th>Id</th><th>First Name</th><th>Last Name</th></thead>';
         $.each(result, function (index, record) {
-            tableData += '<tr data-href="/api/v1/author/' + record.id + '/"><td>' + record.id + '</td><td>' + record.first_name + '</td><td>' + record.last_name + '</td></>';
+            tableData += '<tr data-resource="Author" data-href="/api/v1/author/' + record.id + '/"><td>' + record.id + '</td><td>' + record.first_name + '</td><td>' + record.last_name + '</td></>';
         });
         container.append(tableData);
 
@@ -34,7 +34,7 @@ function initTable(val, result) {
         $('h1').text('Regions');
         let tableData = '<table><thead><th>Id</th><th>Code</th><th>Name</th></thead>';
         $.each(result, function (index, record) {
-            tableData += '<tr data-href="/api/v1/region/' + record.id + '/"><td>' + record.id + '</td><td>' + record.code + '</td><td>' + record.name + '</td></tr>';
+            tableData += '<tr data-resource="Region" data-href="/api/v1/region/' + record.id + '/"><td>' + record.id + '</td><td>' + record.code + '</td><td>' + record.name + '</td></tr>';
         });
         container.append(tableData);
     }
@@ -153,6 +153,19 @@ function submitAuthor(event) {
         });
 }
 
+function initArticle() {
+    const url = $('#editArticleModal').attr("data-target");
+    getJSON(url)
+        .then(response => {
+          $('#id_edit_title').val(response.title);
+          $('#id_edit_content').val(response.content);
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
+
+}
+
 function submitRegion(event) {
     event.preventDefault();
     const form = document.getElementById('addRegionForm');
@@ -198,8 +211,17 @@ function initSubmitRegion() {
 function initDataTableRowClick() {
     $(document).on('click', '.custom-clickable-row', function (e) {
         let url = $(this).data('href');
-        window.location = url;
+        let resource = $(this).data('resource');
+        $(`#edit${resource}Modal`).modal('show');
+        $(`#edit${resource}Modal`).attr('data-target', url)
     });
+}
+
+function initOnOpenModal() {
+    $(document).on('shown.bs.modal', '#editArticleModal', function (e) {
+        initArticle();
+    });
+
 }
 
 $(document).ready(function () {
@@ -211,4 +233,5 @@ $(document).ready(function () {
     initAuthors();
     initRegions();
     initDataTableRowClick();
+    initOnOpenModal();
 });
