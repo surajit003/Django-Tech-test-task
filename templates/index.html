@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+{% endblock title %}
+{% block header %}
+{% endblock header %}
+{% block content %}
+    <div class="col-sm-4" id="articleBlock" style="display: none">
+        <a href="#addArticleModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i>
+            <span>Add New Article</span></a>
+    </div>
+    <div class="col-sm-4" id="authorBlock" style="display: none">
+        <a href="#addAuthorModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i>
+            <span>Add New Author</span></a>
+    </div>
+    <div class="col-sm-4" id="regionBlock" style="display: none">
+        <a href="#addRegionModal" class="btn btn-success" data-toggle="modal"><i
+                class="material-icons">&#xE147;</i>
+            <span>Add New Region</span></a>
+    </div>
+    {% include 'author/modal/add_author.html' %}
+    {% include 'articles/modal/add_article.html' %}
+    {% include 'regions/modal/add_region.html' %}
+    <div id="dataContainer">
+    </div>
+{% endblock content %}
