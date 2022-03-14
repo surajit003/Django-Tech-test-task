@@ -41,8 +41,11 @@ function initTable(val, result) {
 
     $('#dataContainer table').addClass("table table-striped table-hover").dataTable({
         "bLengthChange": false,
+        createdRow: function( row, data, dataIndex ) {
+            $(row).addClass('custom-clickable-row');
+
+    }
     });
-    $('#dataContainer table tr').addClass("custom-clickable-row")
 }
 
 function initOnClickNavItem() {
