@@ -1,37 +1,36 @@
-    <div id="editArticleModal" data-target="" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <form>
-                    <div class="modal-header">
-                        <h4 class="modal-title">Edit Employee</h4>
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                            &times;
-                        </button>
+<div id="editArticleModal" data-target="" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" id="editArticleForm">
+                <div class="modal-header">
+                    <h4 class="modal-title">Edit Employee</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="id_edit_title" name="edit_title" class="form-control">
                     </div>
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label>Title</label>
-                            <input type="text" id="id_edit_title" name="edit_title" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Content</label>
-                            <input type="text" id="id_edit_content" name="edit_content" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <label>Address</label>
-                            <textarea class="form-control" required></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Phone</label>
-                            <input type="text" class="form-control" required>
-                        </div>
+                    <div class="form-group">
+                        <label>Content</label>
+                        <input type="text" id="id_edit_content" name="edit_content" class="form-control">
                     </div>
-                    <div class="modal-footer">
-                        <input type="button" class="btn btn-default" data-dismiss="modal"
-                               value="Cancel">
-                        <input type="submit" class="btn btn-info" value="Save">
+                    <label>Select Authors</label>
+                    <div id="authors_list">
                     </div>
-                </form>
-            </div>
+                    <label>Select Regions</label>
+                    <div id="regions_list">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="button" class="btn btn-default" data-dismiss="modal"
+                           value="Cancel">
+                    <input type="submit" class="btn btn-info" value="Save" id="editArticleBtn">
+                    <input type="submit" class="btn btn-info" value="Delete" id="deleteArticleBtn">
+                </div>
+            </form>
         </div>
     </div>
+</div>

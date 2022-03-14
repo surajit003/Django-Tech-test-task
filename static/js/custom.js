@@ -153,12 +153,75 @@ function submitAuthor(event) {
         });
 }
 
+function editArticle(event) {
+    event.preventDefault();
+    const form = document.getElementById('editArticleForm');
+    const buttonClicked = event.target;
+    buttonClicked.setAttribute('disabled', 'disabled');
+    let regions = $.map($('input[id="id_regions_list"]:checked'), function(c){return c.value; })
+    let authors = $.map($('input[id="id_authors_list"]:checked'), function(c){return c.value; })
+    const data = {
+        "title": $('#id_edit_title').val(),
+        "content": $('#id_edit_content').val(),
+        "regions": convertArrayToJson(regions),
+        "authors": convertArrayToJson(authors)
+    }
+    setFormLoading(form, true);
+    putJSON(form.action, data)
+        .then(response => {
+            if (response.status === 200) {
+                setFormLoading(form, false);
+                alert('Successfully edited Article');
+                window.location.href = '';
+            } else {
+                console.log(`Unknown error saving Article: ${response.status} (${response.statusText})`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+            setFormLoading(form, false);
+        });
+}
+
+function deleteArticle(event) {
+    event.preventDefault();
+    const form = document.getElementById('editArticleForm');
+    const buttonClicked = event.target;
+    buttonClicked.setAttribute('disabled', 'disabled');
+    setFormLoading(form, true);
+    deleteresource(form.action)
+            .then(response => {
+                if (response.status === 200) {
+                    alert('Successfully deleted Article');
+                    setFormLoading(form, false);
+                    $('#editArticleModal').modal('hide');
+                    initData('Article', $('#articleLink').attr('href'));
+                } else {
+                    alert(`Error deleting article: ${response.status} ${response.statusText}`);
+                }
+            })
+            .catch(error => {
+                alert(error.toString());
+            });
+}
+
+
 function initArticle() {
-    const url = $('#editArticleModal').attr("data-target");
+    const url = $('#editArticleForm').attr("action");
     getJSON(url)
         .then(response => {
-          $('#id_edit_title').val(response.title);
-          $('#id_edit_content').val(response.content);
+            $('#id_edit_title').val(response.title);
+            $('#id_edit_content').val(response.content);
+            $('#authors_list').empty();
+            $('#regions_list').empty();
+            let authors = response.authors;
+            for (let i = 0; i < authors.length; i++) {
+                $('#authors_list').append('<input type="checkbox" checked id="id_authors_list" value="' + authors[i].id + '"/> ' + authors[i].first_name + '<br />');
+            }
+            let regions = response.regions;
+            for (let i = 0; i < regions.length; i++) {
+                $('#regions_list').append('<input type="checkbox" checked id="id_regions_list" value="' + regions[i].id + '"/> ' + regions[i].name + '<br />');
+            }
         })
         .catch(error => {
             alert(error.toString());
@@ -203,6 +266,16 @@ function initSubmitAuthor() {
     addAuthorBtn.addEventListener('click', submitAuthor);
 }
 
+function initEditArticle() {
+    const editArticleBtn = document.getElementById('editArticleBtn');
+    editArticleBtn.addEventListener('click', editArticle);
+}
+
+function initDeleteArticle() {
+    const deleteArticleBtn = document.getElementById('deleteArticleBtn');
+    deleteArticleBtn.addEventListener('click', deleteArticle);
+}
+
 function initSubmitRegion() {
     const addRegionBtn = document.getElementById('addRegionBtn');
     addRegionBtn.addEventListener('click', submitRegion);
@@ -213,7 +286,7 @@ function initDataTableRowClick() {
         let url = $(this).data('href');
         let resource = $(this).data('resource');
         $(`#edit${resource}Modal`).modal('show');
-        $(`#edit${resource}Modal`).attr('data-target', url)
+        $(`#edit${resource}Form`).attr('action', url)
     });
 }
 
@@ -228,6 +301,8 @@ $(document).ready(function () {
     initData('Article', $('#articleLink').attr('href'))
     initOnClickNavItem();
     initSubmitArticle();
+    initEditArticle();
+    initDeleteArticle();
     initSubmitAuthor();
     initSubmitRegion();
     initAuthors();
