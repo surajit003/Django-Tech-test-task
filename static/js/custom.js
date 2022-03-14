@@ -7,9 +7,9 @@ function initTable(val, result) {
         $('#articleBlock').css({"display": ""});
         $('#authorBlock').css({"display": "none"});
         $('#regionBlock').css({"display": "none"});
-        let tableData = '<table><thead><th>Id</th><th>Title</th><th>Content</th><th>Regions</th><th>Authors</th></thead>';
+        let tableData = '<table><thead><th>Id</th><th>Title</th><th>Content</th><th></th></thead>';
         $.each(result, function (index, record) {
-            tableData += '<tr data-resource="Article" data-href="/api/v1/article/' + record.id + '/"><td>' + record.id + '</td><td>' + record.title + '</td><td>' + record.content + '</td><td>' + record.regions + '</td><td>' + record.authors + '</td></tr>';
+            tableData += '<tr data-resource="Article" data-href="/api/v1/article/' + record.id + '/"><td>' + record.id + '</td><td>' + record.title + '</td><td>' + record.content + '</td><td><a href="#" class="edit"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>\n</td></tr>';
         });
         container.append(tableData);
     }
@@ -41,10 +41,9 @@ function initTable(val, result) {
 
     $('#dataContainer table').addClass("table table-striped table-hover").dataTable({
         "bLengthChange": false,
-        createdRow: function( row, data, dataIndex ) {
+        createdRow: function (row, data, dataIndex) {
             $(row).addClass('custom-clickable-row');
-
-    }
+        }
     });
 }
 
