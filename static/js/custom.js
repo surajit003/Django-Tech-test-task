@@ -69,11 +69,7 @@ function initAuthors() {
     getJSON('/api/v1/authors/')
         .then(response => {
             $.each(response, function (index, record) {
-                $('#authors').append(
-                    $('<option />')
-                        .text(record.first_name)
-                        .val(record.id)
-                );
+                $('#add_authors').append('<input type="checkbox" id="id_add_authors" value="' + record.id + '"/> ' + record.first_name + '<br />')
             });
         })
         .catch(error => {
@@ -86,11 +82,7 @@ function initRegions() {
         .then(response => {
             $.each(response, function (index, record) {
                 console.log(response);
-                $('#regions').append(
-                    $('<option />')
-                        .text(record.name)
-                        .val(record.id)
-                );
+                $('#add_regions').append('<input type="checkbox" id="id_add_regions" value="' + record.id + '"/> ' + record.name + '<br />')
             });
 
         })
@@ -104,11 +96,17 @@ function submitArticle(event) {
     const form = document.getElementById('addArticleForm');
     const buttonClicked = event.target;
     buttonClicked.setAttribute('disabled', 'disabled');
+    let regions = $.map($('input[id="id_add_regions"]:checked'), function (c) {
+        return c.value;
+    })
+    let authors = $.map($('input[id="id_add_authors"]:checked'), function (c) {
+        return c.value;
+    })
     const data = {
         "title": $('#title').val(),
         "content": $('#content').val(),
-        "regions": convertArrayToJson($('#regions').val()),
-        "authors": convertArrayToJson($('#authors').val())
+        "regions": convertArrayToJson(regions),
+        "authors": convertArrayToJson(authors)
     }
     setFormLoading(form, true);
     postJSON(form.action, data)
@@ -158,8 +156,12 @@ function editArticle(event) {
     const form = document.getElementById('editArticleForm');
     const buttonClicked = event.target;
     buttonClicked.setAttribute('disabled', 'disabled');
-    let regions = $.map($('input[id="id_regions_list"]:checked'), function(c){return c.value; })
-    let authors = $.map($('input[id="id_authors_list"]:checked'), function(c){return c.value; })
+    let regions = $.map($('input[id="id_regions_list"]:checked'), function (c) {
+        return c.value;
+    })
+    let authors = $.map($('input[id="id_authors_list"]:checked'), function (c) {
+        return c.value;
+    })
     const data = {
         "title": $('#id_edit_title').val(),
         "content": $('#id_edit_content').val(),
@@ -190,19 +192,19 @@ function deleteArticle(event) {
     buttonClicked.setAttribute('disabled', 'disabled');
     setFormLoading(form, true);
     deleteresource(form.action)
-            .then(response => {
-                if (response.status === 200) {
-                    alert('Successfully deleted Article');
-                    setFormLoading(form, false);
-                    $('#editArticleModal').modal('hide');
-                    initData('Article', $('#articleLink').attr('href'));
-                } else {
-                    alert(`Error deleting article: ${response.status} ${response.statusText}`);
-                }
-            })
-            .catch(error => {
-                alert(error.toString());
-            });
+        .then(response => {
+            if (response.status === 200) {
+                alert('Successfully deleted Article');
+                setFormLoading(form, false);
+                $('#editArticleModal').modal('hide');
+                initData('Article', $('#articleLink').attr('href'));
+            } else {
+                alert(`Error deleting article: ${response.status} ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
 }
 
 
