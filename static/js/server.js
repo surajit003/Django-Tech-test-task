@@ -49,15 +49,14 @@ function post(url, fetchOptions) {
 }
 
 function deleteresource(url) {
-        debugger
-        return fetch(url, {
-                method: 'DELETE',
-                credentials: 'same-origin',
-            })
-            .then(response => {
-                return response
-            });
-    }
+    return fetch(url, {
+        method: 'DELETE',
+        credentials: 'same-origin',
+    })
+        .then(response => {
+            return response
+        });
+}
 
 
 function put(url, fetchOptions) {

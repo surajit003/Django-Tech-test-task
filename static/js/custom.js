@@ -116,7 +116,7 @@ function submitArticle(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Article');
-                window.location.href = '';
+                initData('Article', $('#articleLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Article: ${response.status} (${response.statusText})`);
             }
@@ -142,7 +142,31 @@ function submitAuthor(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Author');
-                window.location.href = '';
+                initData('Author', $('#authorLink').attr('href'));
+            } else {
+                console.log(`Unknown error saving Author: ${response.status} (${response.statusText})`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+            setFormLoading(form, false);
+        });
+}
+
+function editAuthor(event) {
+    event.preventDefault();
+    const form = document.getElementById('editAuthorForm');
+    const data = {
+        "first_name": $('#id_edit_first_name').val(),
+        "last_name": $('#id_edit_last_name').val(),
+    }
+    setFormLoading(form, true);
+    putJSON(form.action, data)
+        .then(response => {
+            if (response.status === 200) {
+                setFormLoading(form, false);
+                alert('Successfully edited Author');
+                initData('Author', $('#authorLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Author: ${response.status} (${response.statusText})`);
             }
@@ -156,8 +180,6 @@ function submitAuthor(event) {
 function editArticle(event) {
     event.preventDefault();
     const form = document.getElementById('editArticleForm');
-    const buttonClicked = event.target;
-    buttonClicked.setAttribute('disabled', 'disabled');
     let regions = $.map($('input[id="id_regions_list"]:checked'), function (c) {
         return c.value;
     })
@@ -176,9 +198,33 @@ function editArticle(event) {
             if (response.status === 200) {
                 setFormLoading(form, false);
                 alert('Successfully edited Article');
-                window.location.href = '';
+                initData('Article', $('#articleLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Article: ${response.status} (${response.statusText})`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+            setFormLoading(form, false);
+        });
+}
+
+function editRegion(event) {
+    event.preventDefault();
+    const form = document.getElementById('editRegionForm');
+    const data = {
+        "code": $('#id_edit_code').val(),
+        "name": $('#id_edit_name').val(),
+    }
+    setFormLoading(form, true);
+    putJSON(form.action, data)
+        .then(response => {
+            if (response.status === 200) {
+                setFormLoading(form, false);
+                alert('Successfully edited Region');
+                initData('Region', $('#regionLink').attr('href'));
+            } else {
+                console.log(`Unknown error saving Region: ${response.status} (${response.statusText})`);
             }
         })
         .catch(error => {
@@ -190,8 +236,6 @@ function editArticle(event) {
 function deleteArticle(event) {
     event.preventDefault();
     const form = document.getElementById('editArticleForm');
-    const buttonClicked = event.target;
-    buttonClicked.setAttribute('disabled', 'disabled');
     setFormLoading(form, true);
     deleteresource(form.action)
         .then(response => {
@@ -209,6 +253,45 @@ function deleteArticle(event) {
         });
 }
 
+function deleteRegion(event) {
+    event.preventDefault();
+    const form = document.getElementById('editRegionForm');
+    setFormLoading(form, true);
+    deleteresource(form.action)
+        .then(response => {
+            if (response.status === 200) {
+                alert('Successfully deleted Region');
+                setFormLoading(form, false);
+                $('#editRegionModal').modal('hide');
+                initData('Region', $('#regionLink').attr('href'));
+            } else {
+                alert(`Error deleting region: ${response.status} ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
+}
+
+function deleteAuthor(event) {
+    event.preventDefault();
+    const form = document.getElementById('editAuthorForm');
+    setFormLoading(form, true);
+    deleteresource(form.action)
+        .then(response => {
+            if (response.status === 200) {
+                alert('Successfully deleted Author');
+                setFormLoading(form, false);
+                $('#editAuthorModal').modal('hide');
+                initData('Author', $('#authorLink').attr('href'));
+            } else {
+                alert(`Error deleting author: ${response.status} ${response.statusText}`);
+            }
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
+}
 
 function initArticle() {
     const url = $('#editArticleForm').attr("action");
@@ -233,6 +316,32 @@ function initArticle() {
 
 }
 
+function initAuthor() {
+    const url = $('#editAuthorForm').attr("action");
+    getJSON(url)
+        .then(response => {
+            $('#id_edit_first_name').val(response.first_name);
+            $('#id_edit_last_name').val(response.last_name);
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
+
+}
+
+function initRegion() {
+    const url = $('#editRegionForm').attr("action");
+    getJSON(url)
+        .then(response => {
+            $('#id_edit_code').val(response.code);
+            $('#id_edit_name').val(response.name);
+        })
+        .catch(error => {
+            alert(error.toString());
+        });
+
+}
+
 function submitRegion(event) {
     event.preventDefault();
     const form = document.getElementById('addRegionForm');
@@ -248,7 +357,7 @@ function submitRegion(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Region');
-                window.location.href = '';
+                initData('Region', $('#regionLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Region: ${response.status} (${response.statusText})`);
             }
@@ -275,9 +384,29 @@ function initEditArticle() {
     editArticleBtn.addEventListener('click', editArticle);
 }
 
+function initEditAuthor() {
+    const editAuthorBtn = document.getElementById('editAuthorBtn');
+    editAuthorBtn.addEventListener('click', editAuthor);
+}
+
+function initEditRegion() {
+    const editRegionBtn = document.getElementById('editRegionBtn');
+    editRegionBtn.addEventListener('click', editRegion);
+}
+
 function initDeleteArticle() {
     const deleteArticleBtn = document.getElementById('deleteArticleBtn');
     deleteArticleBtn.addEventListener('click', deleteArticle);
+}
+
+function initDeleteAuthor() {
+    const deleteAuthorBtn = document.getElementById('deleteAuthorBtn');
+    deleteAuthorBtn.addEventListener('click', deleteAuthor);
+}
+
+function initDeleteRegion() {
+    const deleteRegionBtn = document.getElementById('deleteRegionBtn');
+    deleteRegionBtn.addEventListener('click', deleteRegion);
 }
 
 function initSubmitRegion() {
@@ -298,6 +427,12 @@ function initOnOpenModal() {
     $(document).on('shown.bs.modal', '#editArticleModal', function (e) {
         initArticle();
     });
+    $(document).on('shown.bs.modal', '#editAuthorModal', function (e) {
+        initAuthor();
+    });
+    $(document).on('shown.bs.modal', '#editRegionModal', function (e) {
+        initRegion();
+    });
 
 }
 
@@ -306,7 +441,11 @@ $(document).ready(function () {
     initOnClickNavItem();
     initSubmitArticle();
     initEditArticle();
+    initEditAuthor();
+    initEditRegion();
     initDeleteArticle();
+    initDeleteAuthor();
+    initDeleteRegion();
     initSubmitAuthor();
     initSubmitRegion();
     initAuthors();
