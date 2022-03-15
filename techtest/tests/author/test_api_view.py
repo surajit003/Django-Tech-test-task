@@ -34,8 +34,8 @@ class AuthorTestCase(TestCase):
                                content_type="application/json")
         self.assertEqual(resp.status_code, 200)
         author = Author.objects.get(first_name="fake test")
-        self.assertEqual(author.first_name, author.first_name)
-        self.assertEqual(author.last_name, author.last_name)
+        self.assertEqual(author.first_name, "fake test")
+        self.assertEqual(author.last_name, "fake test last_name")
 
     def test_delete_Author(self):
         author = Author.objects.get(first_name="test")
