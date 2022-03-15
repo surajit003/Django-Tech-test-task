@@ -116,6 +116,7 @@ function submitArticle(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Article');
+                form.reset();
                 $(`#addArticleModal`).modal('hide');
                 initData('Article', $('#articleLink').attr('href'));
             } else {
@@ -131,8 +132,6 @@ function submitArticle(event) {
 function submitAuthor(event) {
     event.preventDefault();
     const form = document.getElementById('addAuthorForm');
-    const buttonClicked = event.target;
-    buttonClicked.setAttribute('disabled', 'disabled');
     const data = {
         "first_name": $('#first_name').val(),
         "last_name": $('#last_name').val(),
@@ -142,6 +141,7 @@ function submitAuthor(event) {
         .then(response => {
             if (response.status === 201) {
                 setFormLoading(form, false);
+                form.reset();
                 alert('Successfully saved Author');
                 $(`#addAuthorModal`).modal('hide');
                 initData('Author', $('#authorLink').attr('href'));
@@ -350,8 +350,6 @@ function initRegion() {
 function submitRegion(event) {
     event.preventDefault();
     const form = document.getElementById('addRegionForm');
-    const buttonClicked = event.target;
-    buttonClicked.setAttribute('disabled', 'disabled');
     const data = {
         "code": $('#code').val(),
         "name": $('#name').val(),
@@ -362,6 +360,7 @@ function submitRegion(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Region');
+                form.reset();
                 $(`#addRegionModal`).modal('hide');
                 initData('Region', $('#regionLink').attr('href'));
             } else {
@@ -376,13 +375,18 @@ function submitRegion(event) {
 
 
 function initSubmitArticle() {
-    const addArticleBtn = document.getElementById('addArticleBtn');
-    addArticleBtn.addEventListener('click', submitArticle);
+    const addArticleForm = document.getElementById('addArticleForm');
+    addArticleForm.addEventListener('submit', submitArticle);
 }
 
 function initSubmitAuthor() {
-    const addAuthorBtn = document.getElementById('addAuthorBtn');
-    addAuthorBtn.addEventListener('click', submitAuthor);
+    const addAuthorForm = document.getElementById('addAuthorForm');
+    addAuthorForm.addEventListener('submit', submitAuthor);
+}
+
+function initSubmitRegion() {
+    const addRegionForm = document.getElementById('addRegionForm');
+    addRegionForm.addEventListener('submit', submitRegion);
 }
 
 function initEditArticle() {
@@ -413,11 +417,6 @@ function initDeleteAuthor() {
 function initDeleteRegion() {
     const deleteRegionBtn = document.getElementById('deleteRegionBtn');
     deleteRegionBtn.addEventListener('click', deleteRegion);
-}
-
-function initSubmitRegion() {
-    const addRegionBtn = document.getElementById('addRegionBtn');
-    addRegionBtn.addEventListener('click', submitRegion);
 }
 
 function initDataTableRowClick() {
