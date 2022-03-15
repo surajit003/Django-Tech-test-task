@@ -63,7 +63,7 @@ function put(url, fetchOptions) {
     const self = this;
     return fetch(url, fetchOptions)
         .then(function (response) {
-            if (response.status !== 201) {
+            if (response.status !== 200) {
                 throw new Error(response.status + ', ' + response.statusText);
             }
             if (!self.isJSON(response)) {
@@ -92,13 +92,4 @@ function putJSON(url, body) {
         fetchOptions.body = JSON.stringify(body);
     }
     return this.put(url, fetchOptions);
-}
-
-function postForm(url, body) {
-    const options = {
-        method: 'POST',
-        credentials: 'same-origin',
-        body: body,
-    }
-    return fetch(url, options);
 }
