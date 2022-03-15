@@ -66,7 +66,6 @@ function initData(text, url) {
         });
 }
 
-
 function initAuthors() {
     getJSON('/api/v1/authors/')
         .then(response => {
@@ -442,17 +441,17 @@ function initOnOpenModal() {
 }
 
 $(document).ready(function () {
-    initData('Article', $('#articleLink').attr('href'))
+    initData($('#articleLink').text(), $('#articleLink').attr('href'));
     initOnClickNavItem();
     initSubmitArticle();
+    initSubmitAuthor();
+    initSubmitRegion();
     initEditArticle();
     initEditAuthor();
     initEditRegion();
     initDeleteArticle();
     initDeleteAuthor();
     initDeleteRegion();
-    initSubmitAuthor();
-    initSubmitRegion();
     initAuthors();
     initRegions();
     initDataTableRowClick();
