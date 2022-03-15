@@ -116,6 +116,7 @@ function submitArticle(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Article');
+                $(`#addArticleModal`).modal('hide');
                 initData('Article', $('#articleLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Article: ${response.status} (${response.statusText})`);
@@ -142,6 +143,7 @@ function submitAuthor(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Author');
+                $(`#addAuthorModal`).modal('hide');
                 initData('Author', $('#authorLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Author: ${response.status} (${response.statusText})`);
@@ -166,6 +168,7 @@ function editAuthor(event) {
             if (response.status === 200) {
                 setFormLoading(form, false);
                 alert('Successfully edited Author');
+                $(`#editAuthorModal`).modal('hide');
                 initData('Author', $('#authorLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Author: ${response.status} (${response.statusText})`);
@@ -198,6 +201,7 @@ function editArticle(event) {
             if (response.status === 200) {
                 setFormLoading(form, false);
                 alert('Successfully edited Article');
+                $(`#editArticleModal`).modal('hide');
                 initData('Article', $('#articleLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Article: ${response.status} (${response.statusText})`);
@@ -222,6 +226,7 @@ function editRegion(event) {
             if (response.status === 200) {
                 setFormLoading(form, false);
                 alert('Successfully edited Region');
+                $(`#editRegionModal`).modal('hide');
                 initData('Region', $('#regionLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Region: ${response.status} (${response.statusText})`);
@@ -357,6 +362,7 @@ function submitRegion(event) {
             if (response.status === 201) {
                 setFormLoading(form, false);
                 alert('Successfully saved Region');
+                $(`#addRegionModal`).modal('hide');
                 initData('Region', $('#regionLink').attr('href'));
             } else {
                 console.log(`Unknown error saving Region: ${response.status} (${response.statusText})`);
