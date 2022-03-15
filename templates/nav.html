@@ -11,12 +11,15 @@
             <li class="nav-item active">
                 <a class="nav-link" href="{% url 'api-articles' %}" id="articleLink">Article</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'api-authors' %}" id="authorLink">Author</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="{% url 'api-regions' %}" id="regionLink">Region</a>
             </li>
+        </ul>
+         <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'logout' %}">Log Out</a></li>
         </ul>
     </div>
 </nav>

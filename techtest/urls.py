@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """techtest URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -16,6 +17,8 @@ Including another URLconf
 import debug_toolbar
 
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import LogoutView
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
@@ -25,9 +28,10 @@ from techtest.views import IndexView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', IndexView, name='index'),
+    path("logout/", LogoutView.as_view(), name="logout"),
+    path("", login_required(IndexView), name="index"),
 ]
-urlpatterns += path('api/v1/', include(techtest.api_urls)),
+urlpatterns += (path("api/v1/", include(techtest.api_urls)),)
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
