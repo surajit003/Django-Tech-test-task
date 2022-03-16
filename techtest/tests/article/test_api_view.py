@@ -31,6 +31,11 @@ class ArticleTestCase(TestCase):
             },
         )
 
+    def test_get_article_raises_404(self):
+        resp = self.client.get(f"/api/v1/article/2/")
+        self.assertEqual(resp.status_code, 404)
+        self.assertEqual(resp.json(), {"error": "No Article matches the given query"})
+
     def test_post_article_without_author_region(self):
         post_data = {"title": "fake title", "content": "fake content"}
         resp = self.client.post(
