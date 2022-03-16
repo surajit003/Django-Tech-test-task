@@ -45,7 +45,7 @@ class AuthorTestCase(TestCase):
         self.assertEqual(author.first_name, "fake test")
         self.assertEqual(author.last_name, "fake test last_name")
 
-    def test_delete_Author(self):
+    def test_delete_author(self):
         author = Author.objects.get(first_name="test")
         resp = self.client.delete(f"/api/v1/author/{author.id}/")
         author_count = Author.objects.filter(first_name="test").count()
